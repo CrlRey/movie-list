@@ -1,10 +1,13 @@
 import { defineStore } from 'pinia'
 import { onMounted, reactive, ref } from 'vue'
 import APIservices from '@/services/APIservices'
+import { useModal } from './modal'
 
 
 
 export const useMovies = defineStore('movies',() => {
+
+  const modal = useModal()
   
   const movieList = ref([])
 
@@ -14,6 +17,8 @@ export const useMovies = defineStore('movies',() => {
   })
 
   const film = ref([])
+
+  const detailsMovie = ref({})
 
 
   onMounted(async () => {
@@ -33,10 +38,19 @@ export const useMovies = defineStore('movies',() => {
     console.log(results);
   }
 
+  async function getDetailsMovie(id) {
+    const {data} = await APIservices.getMovieId(id)
+    console.log(data);
+    detailsMovie.value = data
+    modal.showModal()
+  }
+
   return {
     movieList,
     nameList,
     getMovies,
-    film
+    film,
+    getDetailsMovie,
+    detailsMovie
   }
 })

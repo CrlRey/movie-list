@@ -1,5 +1,6 @@
 <script setup>
 import HeaderComponent from './components/header/HeaderComponent.vue';
+import ModalComponent from './components/modal/ModalComponent.vue';
 import SearchComponent from './components/search/SearchComponent.vue';
 import { RouterView } from 'vue-router';
 
@@ -24,6 +25,7 @@ import { RouterView } from 'vue-router';
     </div>
   </div>
   <RouterView />
+  <ModalComponent />
 </template>
 
 <style>

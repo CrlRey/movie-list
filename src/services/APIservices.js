@@ -7,5 +7,8 @@ export default{
     },
     getMovies({title}){
         return api.request(`/search/movie?query=${title}`)
+    },
+    getMovieId(id){
+        return api.request(`/movie/${id}?language=en-US`)
     }
 }

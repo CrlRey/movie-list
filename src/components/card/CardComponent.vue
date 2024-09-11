@@ -4,11 +4,15 @@ import { list } from 'postcss';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
+const movie = useMovies()
+
 const prop = defineProps({
     listFilm:{
       type: Object
     }
   })
+
+
 
  const imgUrl = computed(() => {
   const pathurlimg = 'https://image.tmdb.org/t/p/w500';
@@ -19,9 +23,9 @@ const prop = defineProps({
 
 <template>
      <div  className="bg-card rounded-lg overflow-hidden shadow-lg">
-        <Link href="#" className="block" prefetch={false}>
-        <img :src="imgUrl" :alt="listFilm.title" width={300} height={450} className="w-full h-[450px] object-cover" />
-        </Link>
+        <a href="#" className="block" prefetch={false}>
+        <img :src="imgUrl" :alt="listFilm.title" width={300} height={450} class="w-full h-[450px] object-cover hover:scale-105 transition-all" />
+        </a>
         <div className="p-4">
           <h2 className="text-lg font-bold text-card-foreground line-clamp-1">{{ listFilm.title }}</h2>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -30,6 +34,7 @@ const prop = defineProps({
             <div className="flex items-center gap-1">
               <StarIcon className="w-4 h-4 fill-primary" />
               <span>8.7</span>
+              <button @click="movie.getDetailsMovie(listFilm.id)">ver mas</button>
             </div>
           </div>
         </div>
