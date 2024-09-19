@@ -9,7 +9,7 @@ import { RouterView } from 'vue-router';
 <template>
 
 
-  <div class="relative md:h-2/3 bg-cover bg-center hero-img">
+  <div class="relative md:h-2/3 bg-cover bg-center hero-img overflow-hidden">
     <div class="absolute inset-0 bg-black opacity-90"></div>
     <div class="relative z-0">
       <HeaderComponent />
@@ -17,8 +17,8 @@ import { RouterView } from 'vue-router';
 
 
 
-    <div class="mx-auto container w-full">
-      <div class="relative z-10 flex items-center h-full">
+    <div class="mx-auto container w-full pb-10">
+      <div class="flex items-center h-full py-5">
         <!-- Busacdor -->
         <SearchComponent />
       </div>

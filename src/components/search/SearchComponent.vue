@@ -13,7 +13,7 @@ import { useRoute } from 'vue-router';
 
 
     const validateForm = () => {
-        store.getMovies()
+        store.getMovies(store.currentPage)
     }
     
 </script>
@@ -46,7 +46,7 @@ import { useRoute } from 'vue-router';
 
                 </div>
             </div>
-            <button type="submit" class="bg-cyan-700 mb-5 font-bold rounded-md p-2 w-full shadow-md text-white" >BUSCAR</button>
+            <button type="submit" class="bg-gradient-to-r from-cyan-500 to-blue-500 mb-5 font-bold rounded-md p-2 w-full shadow-md text-white" >BUSCAR</button>
         </form>
     </div>
 </template>

@@ -2,46 +2,56 @@ import { defineStore } from 'pinia'
 import { onMounted, reactive, ref } from 'vue'
 import APIservices from '@/services/APIservices'
 import { useModal } from './modal'
+import { data } from 'autoprefixer'
+import foreachMovie from '@/helpers/foreachMovie'
 
 
-
-export const useMovies = defineStore('movies',() => {
-
+export const useMovies = defineStore('movies', () => {
   const modal = useModal()
-  
+
+  // Save genres select
   const movieList = ref([])
 
+  // Save data form title and genre for search
   const nameList = reactive({
     title: '',
-    genre: ''
+    genre: '',
+    total_pages : '',
   })
 
+  // Show results from movies
   const film = ref([])
 
+  // Save data from a specific movie
   const detailsMovie = ref({})
 
+  // Save genres for modal
+  const gen = ref([])
+
+  // Total pages
+const currentPage = ref(1)
 
   onMounted(async () => {
-    try {
-       const {data: {genres}} = await APIservices.obtenerCategorias()
-       genres.forEach(element => {
-        movieList.value.push(element.name) 
-       });
-      } catch (error) {
-        console.error(error)
-      }
+    try { const {data: { genres }} = await APIservices.obtenerCategorias()
+      foreachMovie.forDataPush(genres, movieList)
+    } catch (error) {
+      console.error(error)
+    }
   })
 
-  async function getMovies(){
-    const {data: {results}} = await APIservices.getMovies(nameList)
-    film.value = results
-    console.log(results);
+  async function getMovies(currentPage) {
+    //const {title, total_pages} = nameList
+    const { data } = await APIservices.getMovies(nameList.title, currentPage)
+    nameList.total_pages = data.total_pages
+    film.value = data.results
+    
   }
 
   async function getDetailsMovie(id) {
-    const {data} = await APIservices.getMovieId(id)
-    console.log(data);
+    const { data } = await APIservices.getMovieId(id)
     detailsMovie.value = data
+    gen.value = []
+    foreachMovie.forGenPush(detailsMovie, gen)
     modal.showModal()
   }
 
@@ -50,7 +60,9 @@ export const useMovies = defineStore('movies',() => {
     nameList,
     getMovies,
     film,
+    gen,
+    currentPage,
     getDetailsMovie,
-    detailsMovie
+    detailsMovie,
   }
 })

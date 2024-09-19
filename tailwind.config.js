@@ -6,7 +6,13 @@ export default {
   ],
   theme: {
     extend: {},
+    fontFamily: {
+      'sans': ['San Francisco', 'Helvetica', 'Arial', 'sans-serif'],
+      'sf': ['San Francisco', 'sans-serif'],
+    },
   },
   plugins: [],
 }
+
+
 
