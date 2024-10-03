@@ -1,6 +1,8 @@
 <script setup>
 import HeaderComponent from './components/header/HeaderComponent.vue';
 import ModalComponent from './components/modal/ModalComponent.vue';
+import NotificationComponent from './components/notification/NotificationComponent.vue';
+import SaveFilter from './components/SaveFilter/SaveFilter.vue';
 import SearchComponent from './components/search/SearchComponent.vue';
 import { RouterView } from 'vue-router';
 
@@ -14,18 +16,19 @@ import { RouterView } from 'vue-router';
     <div class="relative z-0">
       <HeaderComponent />
     </div>
-
-
-
+   
     <div class="mx-auto container w-full pb-10">
       <div class="flex items-center h-full py-5">
         <!-- Busacdor -->
         <SearchComponent />
+        <!-- SaveFilter -->
+        <SaveFilter />
       </div>
     </div>
   </div>
   <RouterView />
   <ModalComponent />
+  <NotificationComponent />
 </template>
 
 <style>

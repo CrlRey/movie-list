@@ -1,53 +1,75 @@
 <script setup>
 import { useMovies } from '@/stores/movies';
-import { computed, reactive } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
-
-
-    const name = useRoute()
-    const showForm = computed(() => name.name === 'inicio')
-
-    const store = useMovies();
-    console.log(store.nameList);
+ import { Switch } from '@headlessui/vue'
 
 
 
-    const validateForm = () => {
-        store.getMovies(store.currentPage)
+const name = useRoute()
+const showForm = computed(() => name.name === 'inicio')
+
+const store = useMovies();
+console.log(store.nameList);
+
+const validateForm = () => {
+    store.getMovies(store.currentPage)
+}
+
+const validateFormTv = () => {
+    store.getTvSeries(store.currentPage)
+}
+
+const filterSearch = () => {
+    console.log(store.enabled);
+    //return store.enabled ? validateForm : validateFormTv
+    if (store.enabled) {
+        store.currentPage = 1
+       return validateForm()
     }
-    
+       store.currentPage = 1
+       return validateFormTv()
+}
+
+console.log(store.detailsMovie.value);
+
 </script>
 
 
 <template>
-    <div class="md:w-1/2 bg-white rounded-md px-10 shadow-md z-10">
-        <form v-if="showForm" @submit.prevent="validateForm">
-            <div class="py-8">
-                <div class="mb-6">
-                    <h1 class="text-2xl font-bold text-primary-foreground text-black">Movie Search</h1>
-                    <p class="text-muted-foreground text-black">Find your favorite movies with ease.</p>
-                </div>
-                <div class="relative space-y-2">
-
-               <label for="title" class="block font-bold text-2xl">Title movie</label>
-
-               <input type="text" id="title" class="p-2 w-full rounded-sm bg-slate-100" v-model="store.nameList.title">
-
-                    <label for="genero" class="block text-2xl font-bold text-primary-foreground text-black">Genero</label>
-
-                    <select id="genero" class="bg-slate-100 p-2 w-full rounded-md focus:outline-none text-black" v-model="store.nameList.genre">
-                        <option value="">
-                            --SELECCIONE--
-                        </option>
-                        <option class="text-black" v-for="mvList in store.movieList" :key="mvList" :value="mvList">
-                            {{ mvList }}
-                        </option>
-                    </select>
-
+    <div class="md:w-1/2 bg-white rounded-md px-10 shadow-md z-10 max-sm:mx-5 max-sm:w-full">
+        <form v-if="showForm" @submit.prevent="filterSearch">
+            <div class="flex justify-between">
+                <div class="flex-grow">
+                    <div class="py-8">
+                        <h1 class="text-2xl font-bold text-primary-foreground text-black">Movie Search</h1>
+                        <p class="text-muted-foreground text-black">Find 2 your favorite movies with ease.</p>
+                        <div class="flex items-center space-x-5 mt-5 max-sm:block max-sm:space-x-0 max-sm:space-y-5">
+                            <div class="flex-grow">
+                                <label for="title" class="block font-bold text-2xl">Title movie</label>
+                                <input type="text" id="title" class="p-2 w-full rounded-sm bg-slate-100"
+                                    v-model="store.nameList.title">
+                            </div>
+                            <div class="">
+                                <p class="text-2xl font-bold">Search Only in</p>
+                                <div class="flex items-center space-x-2 py-2">
+                                    <p>TV Series</p>
+                                    <!-- Switch -->
+                                    <Switch v-model="store.enabled" :class="store.enabled ? 'bg-cyan-500' : 'bg-teal-500'"
+                                        class="relative inline-flex h-6 w-11 items-center rounded-full">
+                                        <span class="sr-only">Enable notifications</span>
+                                        <span :class="store.enabled ? 'translate-x-6' : 'translate-x-1'"
+                                            class="inline-block h-4 w-4 transform rounded-full bg-white transition" />
+                                    </Switch>
+                                    <p>Movies</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <button type="submit" class="bg-gradient-to-r from-cyan-500 to-blue-500 mb-5 font-bold rounded-md p-2 w-full shadow-md text-white" >BUSCAR</button>
+            <button type="submit"
+                class="bg-gradient-to-r from-cyan-500 to-blue-500 mb-5 font-bold rounded-md p-2 w-full shadow-md text-white">BUSCAR</button>
         </form>
     </div>
 </template>
-

@@ -11,5 +11,11 @@ export default{
     getMovieId(id){
         return api.request(`/movie/${id}?language=en-US`)
     },
+    getTvSeries(title, total_pages=1){
+        return api.request(`/search/tv?query=${title}&page=${total_pages}`)
+    },
+    getTvSeriesId(id){
+        return api.request(`/tv/${id}?language=en-US`)
+    },
     
 }

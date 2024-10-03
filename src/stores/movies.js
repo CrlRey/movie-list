@@ -31,6 +31,9 @@ export const useMovies = defineStore('movies', () => {
   // Total pages
 const currentPage = ref(1)
 
+// Switch value tv/movie
+const enabled = ref(false)
+
   onMounted(async () => {
     try { const {data: { genres }} = await APIservices.obtenerCategorias()
       foreachMovie.forDataPush(genres, movieList)
@@ -44,11 +47,27 @@ const currentPage = ref(1)
     const { data } = await APIservices.getMovies(nameList.title, currentPage)
     nameList.total_pages = data.total_pages
     film.value = data.results
+    console.log(data);
     
   }
 
   async function getDetailsMovie(id) {
     const { data } = await APIservices.getMovieId(id)
+    detailsMovie.value = data
+    gen.value = []
+    foreachMovie.forGenPush(detailsMovie, gen)
+    modal.showModal()
+  }
+
+  async function getTvSeries(currentPage) {
+    const { data } = await APIservices.getTvSeries(nameList.title, currentPage)
+    nameList.total_pages = data.total_pages
+    film.value = data.results
+    console.log(data);
+  }
+
+  async function getDetailsTvSeries(id) {
+    const { data } = await APIservices.getTvSeriesId(id)
     detailsMovie.value = data
     gen.value = []
     foreachMovie.forGenPush(detailsMovie, gen)
@@ -62,7 +81,10 @@ const currentPage = ref(1)
     film,
     gen,
     currentPage,
+    enabled,
     getDetailsMovie,
     detailsMovie,
+    getTvSeries,
+    getDetailsTvSeries
   }
 })
