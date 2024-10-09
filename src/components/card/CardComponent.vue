@@ -4,6 +4,7 @@ import { useMovies } from '@/stores/movies';
 import { computed } from 'vue';
 const store = useMovies()
 const favoriteStore = useFavoritesStore()
+const storeFavorites = useFavoritesStore()
 
 const props = defineProps({
   movie: {
@@ -19,9 +20,9 @@ const props = defineProps({
 const contentDetails = () => {
   if (props.isFavorite) {
     // Si es un favorito, usa el estado del store de favoritos
-    return favoriteStore.showFavoriteMovies 
-    ? store.getDetailsMovie(props.movie.id) 
-    : store.getDetailsTvSeries(props.movie.id);
+    return favoriteStore.showFavoriteMovies
+      ? store.getDetailsMovie(props.movie.id)
+      : store.getDetailsTvSeries(props.movie.id);
   } else {
     // Si no es un favorito
     return store.enabled
@@ -55,8 +56,6 @@ const contentTitle = computed(() => {
   return props.movie.title || props.movie.name
 })
 
-
-
 </script>
 
 <template>
@@ -64,13 +63,7 @@ const contentTitle = computed(() => {
     <div class="relative group ">
       <div class="hover:transition-all hover:scale-105 flex items-center justify-center z-10 bg-black">
         <img :src="[props.movie.poster_path ? imgUrl : '/img/NoImage.png']" :alt="movie.title" width=300 height=450
-          class="w-full h-[450px] transition-all group-hover:opacity-40" />
-          <button class="bg-white rounded-full p-3 z-20 absolute invisible group-hover:visible"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="size-6 group-hover:text-purple-500">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
-            </svg>
-          </button>
+          class="w-full h-[450px] transition-all" />
       </div>
     </div>
     <div class="p-4">

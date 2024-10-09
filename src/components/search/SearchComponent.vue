@@ -1,8 +1,9 @@
 <script setup>
 import { useMovies } from '@/stores/movies';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
  import { Switch } from '@headlessui/vue'
+import { useNotification } from '@/stores/Notification';
 
 
 
@@ -10,7 +11,7 @@ const name = useRoute()
 const showForm = computed(() => name.name === 'inicio')
 
 const store = useMovies();
-console.log(store.nameList);
+const storeNotification = useNotification()
 
 const validateForm = () => {
     store.getMovies(store.currentPage)
@@ -19,10 +20,19 @@ const validateForm = () => {
 const validateFormTv = () => {
     store.getTvSeries(store.currentPage)
 }
+const handlerValidate = () => {
+    if (store.nameList.title.trim() === '') {
+        storeNotification.$patch({
+            text: 'all fields are required',
+            show: true,
+            error: true
+        })
+        return    
+    }
+    filterSearch()
+}
 
 const filterSearch = () => {
-    console.log(store.enabled);
-    //return store.enabled ? validateForm : validateFormTv
     if (store.enabled) {
         store.currentPage = 1
        return validateForm()
@@ -31,19 +41,16 @@ const filterSearch = () => {
        return validateFormTv()
 }
 
-console.log(store.detailsMovie.value);
-
 </script>
-
 
 <template>
     <div class="md:w-1/2 bg-white rounded-md px-10 shadow-md z-10 max-sm:mx-5 max-sm:w-full">
-        <form v-if="showForm" @submit.prevent="filterSearch">
+        <form v-if="showForm" @submit.prevent="handlerValidate()">
             <div class="flex justify-between">
                 <div class="flex-grow">
                     <div class="py-8">
                         <h1 class="text-2xl font-bold text-primary-foreground text-black">Movie Search</h1>
-                        <p class="text-muted-foreground text-black">Find 2 your favorite movies with ease.</p>
+                        <p class="text-muted-foreground text-black">Find your favorite movies with ease.</p>
                         <div class="flex items-center space-x-5 mt-5 max-sm:block max-sm:space-x-0 max-sm:space-y-5">
                             <div class="flex-grow">
                                 <label for="title" class="block font-bold text-2xl">Title movie</label>
@@ -69,7 +76,7 @@ console.log(store.detailsMovie.value);
                 </div>
             </div>
             <button type="submit"
-                class="bg-gradient-to-r from-cyan-500 to-blue-500 mb-5 font-bold rounded-md p-2 w-full shadow-md text-white">BUSCAR</button>
+                class="bg-gradient-to-r from-cyan-500 to-blue-500 mb-5 font-bold rounded-md p-2 w-full shadow-md text-white">SEARCH</button>
         </form>
     </div>
 </template>

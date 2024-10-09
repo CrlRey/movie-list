@@ -43,12 +43,9 @@ const enabled = ref(false)
   })
 
   async function getMovies(currentPage) {
-    //const {title, total_pages} = nameList
     const { data } = await APIservices.getMovies(nameList.title, currentPage)
     nameList.total_pages = data.total_pages
     film.value = data.results
-    console.log(data);
-    
   }
 
   async function getDetailsMovie(id) {
@@ -63,7 +60,6 @@ const enabled = ref(false)
     const { data } = await APIservices.getTvSeries(nameList.title, currentPage)
     nameList.total_pages = data.total_pages
     film.value = data.results
-    console.log(data);
   }
 
   async function getDetailsTvSeries(id) {

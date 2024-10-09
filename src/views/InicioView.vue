@@ -1,6 +1,7 @@
 <script setup>
 import CardComponent from '@/components/card/CardComponent.vue';
 import PaginationComponent from '@/components/pagination/PaginationComponent.vue';
+import { useFavoritesStore } from '@/stores/favorites';
 import { useMovies } from '@/stores/movies';
 import { computed, ref, watch } from 'vue';
 
@@ -13,7 +14,6 @@ const onClickHandler = (page) => {
     }
        return store.getTvSeries(page)
 };
-
 
 </script>
 
